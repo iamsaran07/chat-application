@@ -57,6 +57,16 @@ io.on('connection', async (socket) => {
   });
 });
 
+const connect = mongoose.connect(process.env.MONGO_URL);
+
+connect.then(()=>{
+    console.log("CONNECTED TO DATABASE...");
+})
+.catch((err)=>{
+    console.log("FAILED TO CONNECT DATABASE...")
+    console.log(err);
+});
+
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
   console.log(`PORT CONNECTED TO ${PORT}...`);
