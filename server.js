@@ -3,6 +3,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const path = require('path');
 const Message = require('./models/message');
+const mongoose = require('mongoose')
 require("dotenv").config();
 require("./config/mongo");
 
@@ -57,17 +58,14 @@ io.on('connection', async (socket) => {
   });
 });
 
-const connect = mongoose.connect(process.env.MONGO_URL);
-
-connect.then(()=>{
+mongoose.connect(process.env.MONGO_URL)
+  .then(() => {
     console.log("CONNECTED TO DATABASE...");
-})
-.catch((err)=>{
+    app.listen(PORT, () => {
+      console.log(`PORT CONNECTED TO ${PORT}...`);
+    });
+  })
+  .catch((err) => {
     console.log("FAILED TO CONNECT DATABASE...")
     console.log(err);
-});
-
-const PORT = process.env.PORT || 4000;
-server.listen(PORT, () => {
-  console.log(`PORT CONNECTED TO ${PORT}...`);
-});
+  });
